@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface CartItem{
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
@@ -34,6 +34,7 @@ export function CartProvider({children}: {children: ReactNode}){
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   const addToCart = (product: Omit<CartItem, "quantity">) => {
+    console.log("Adicionando produto: ",product);
     setCartItems((prevItems) => {
 
     const existingItem = prevItems.find((item) => item.id === product.id);

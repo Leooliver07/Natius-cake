@@ -1,27 +1,27 @@
 "use client"
 import { useState } from "react";
 import {supabase} from "@/services/supabaseClient";
-
+import { useCart } from "@/context/CartContext";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
 }
 
-export function AddCartButton ({product, onAddToCart}: {product: Product, onAddToCart: (product: Product) => void}){
+export function AddCartButton ({product}: {product: Product}){
 
-  
+  const {addToCart} = useCart();
   const [added, setAdded] = useState(false);
 
   function handleClick(){
 
-    onAddToCart(product)
+    addToCart(product);
     setAdded(true)
     setTimeout(() => {
       setAdded(false)
-    }, 2000)
+    }, 1500)
 
 
   }
