@@ -5,6 +5,7 @@ import { Header } from "./components/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { OrderCar } from "./components/order";
+import { CartProvider } from "@/context/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header/>
+        <CartProvider>
+           <Header/>
         <SidebarProvider>
           <AppSidebar/>
           <SidebarTrigger className="cursor-pointer"/>
@@ -39,8 +41,12 @@ export default function RootLayout({
             
             {children}
           </main>
-          <OrderCar/>
+          <div className="hidden md:inline-flex">
+            <OrderCar/>
+          </div>
         </SidebarProvider>
+        </CartProvider>
+       
       
       </body>
     </html>

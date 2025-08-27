@@ -1,5 +1,5 @@
 
-import {Home, Inbox, Search, Settings } from "lucide-react"
+import {Home, Inbox, Search, Settings, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -10,16 +10,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { url } from "inspector"
+import { title } from "process"
+
+import { MdDashboard } from "react-icons/md"
 
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Cadastro de produtos",
+    url: "/register",
     icon: Inbox,
   },
   
@@ -32,6 +36,16 @@ const items = [
     title: "Settings",
     url: "#",
     icon: Settings,
+  },
+  {
+    title:"Conta",
+    url: "#",
+    icon: User,
+  },
+  {
+    title: "Dashboard",
+    url: "#",
+    icon: MdDashboard,
   },
 ]
 
