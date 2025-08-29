@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "./components/header";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { OrderCar } from "./components/Order/index";
+import { OrderCar } from "./components/Order/OrderCar";
 import { CartProvider } from "@/context/CartContext";
 import { UIProvider } from "@/context/UIContext";
 
