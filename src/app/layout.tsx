@@ -33,14 +33,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CartProvider>
+          
            <Header/>
-        <SidebarProvider>
-          <AppSidebar/>
-          <SidebarTrigger className="cursor-pointer"/>
-          <main className="mx-auto">
-            
+            <SidebarProvider>
+            <AppSidebar/>
+            <SidebarTrigger className="cursor-pointer"/>
+          <div className="mx-auto">
             {children}
-          </main>
+          </div>
           <div className="hidden md:inline-flex">
             <OrderCar/>
           </div>

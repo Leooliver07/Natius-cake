@@ -6,19 +6,21 @@ import { OrderCar } from "../order"
 
 //Tipagem para item do carrinho
 interface CartItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
   quantity: number;
+  type?: string;
 }
 
 // Tipagem de produtos recebidos
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
+  type?: string;
 
 }
 
@@ -28,7 +30,7 @@ export function SalesPanel({products}: {products: Product[]}){
 
 
   return (
-    <div>
+    <div className="mt-6 ">
       <Card products={products}  />
       
     </div>

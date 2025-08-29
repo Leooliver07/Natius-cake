@@ -1,0 +1,83 @@
+"use server"
+
+import {supabase} from "@/services/supabaseClient"
+import { revalidatePath } from "next/cache"
+
+type CartItem = {
+  id:string;
+  name: string;
+  price: number;
+  cost: number;
+  quantity: number;
+  type?: string;
+}
+
+export async function createOrder(CartItems: CartItem[]){
+  try{
+    const totalAmount = CartItems.reduce((sum, item)=> sum + item.price * item.quantity, 0)
+    const totalCost = CartItems.reduce((sum, item)=> sum + item.cost * item.quantity, 0)
+    
+    const {data:orderData, error:orderError} = await supabase.from('orders').insert({
+      total_amount: totalAmount,
+      total_cost: totalCost,
+    })
+    .select('id')
+    .single()
+
+  if(orderError)throw orderError;
+  const newOrderId = orderData.id
+
+  const orderItemsToInsert = CartItems.map((item)=>({
+    order_id: newOrderId,
+    product_id: item.id,
+    quantity: item.quantity,
+    unit_price: item.price,
+    unit_cost: item.cost,
+  }))
+
+  const {error: itemsError} = await supabase.from('order_items').insert(orderItemsToInsert)
+
+  if(itemsError) throw itemsError;
+
+  revalidatePath('/')
+
+  return {sucess: true, message: "Pedido finalizado com sucesso!"}
+
+
+
+  }catch(error){
+    console.log(error)
+    return{sucess: false, message:"Erro ao finalizar pedido. Tente novamente!"}
+  }
+
+}
+
+export async function addProductAction(formData: FormData){
+  const name = formData.get('name') as string;
+  const price = formData.get('price') as string;
+  const cost = formData.get('cost') as string;
+  
+
+  if(!name || !price || !cost){
+    return{sucess: false, message:'Todos os campos são obrigatórios!'}
+  }
+
+  try{
+    const{error}= await supabase.from('products').insert({
+      name,
+      price: Number(price),
+      cost: Number(cost),
+     
+    })
+    alert('Produto adicionado com sucesso!')
+    if(error) throw error;
+
+    revalidatePath('/')
+    revalidatePath('/register')
+    
+    return{sucess: true, message: 'Produto adicionado com sucesso!'}
+  }catch(error){
+    console.log(error)
+    return{sucess: false, message: 'Erro ao adicionar produto. Tente novamente!'}
+  } 
+}

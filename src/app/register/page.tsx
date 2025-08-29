@@ -1,13 +1,11 @@
+"use client"
 // import supabase from '@/services/supabaseClient'
-
-
-async function readTable(){
-  
-
-}
+import { useState } from "react"
+import { ModalRegister } from "@/app/register/modalRegister"
 
 export default function Register(){
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return(
     
@@ -17,11 +15,23 @@ export default function Register(){
             <h1 className="font-bold text-xl">Gerenciamento de produtos</h1>
           </div>
           <div className="w-full flex items-end justify-end mx-auto">
-            <button className="bg-blue-600 text-white font-bold rounded p-2 inline-block align-middle">
+            <button
+              name="register"
+              className="bg-blue-600 text-white font-bold rounded p-2 inline-block align-middle cursor-pointer"
+              onClick={() => setIsModalOpen(true)}
+            >
                Novo Produto
             </button>
-          </div>
 
+            
+          </div>
+          <div>
+            <ModalRegister isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            /> 
+
+          </div>
+         
         
       </main> 
   )

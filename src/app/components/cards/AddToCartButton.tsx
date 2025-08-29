@@ -8,6 +8,7 @@ interface Product {
   name: string;
   price: number;
   cost: number;
+  type?: string;
 }
 
 export function AddCartButton ({product}: {product: Product}){
