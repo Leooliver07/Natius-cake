@@ -46,11 +46,11 @@ export function ReceiptModal({orderItems, onClose}: ReceiptModalProps){
         </div>
         <DialogFooter>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+            className="bg-red-500 hover:bg-red-600 text-white  font-bold py-2 px-4 rounded mr-2 cursor-pointer"
             onClick={handlePrint}>Imprimir</button>
           
           <button 
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"  
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded cursor-pointer"  
             onClick={onClose}
             
             >Fechar</button>
