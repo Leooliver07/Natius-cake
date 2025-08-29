@@ -38,10 +38,12 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
             <div className="flex flex-col w-full mb-4">
               <label htmlFor="price">Preço</label>
               <input
+                className="appearance-none"
                 name="price"
                 placeholder="Preço do produto"
                 required
                 type="number"
+
               />
             </div>
 
@@ -53,6 +55,17 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
                 required
                 type="number"
               />
+            </div>
+            <div className="flex flex-col w-full mb-4">
+              <label htmlFor="type">Tipo</label>
+              <select 
+                title="Selecione um tipo"
+                name="type"
+                required>
+                <option value={"Bolo"}>Bolo</option>
+                <option value={"Bebida"}>Bebida</option>
+                <option value={"Doce"}>Outros</option>
+              </select>
             </div>
           </div>
 

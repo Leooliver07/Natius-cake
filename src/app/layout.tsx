@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "./components/header";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { OrderCar } from "./components/order";
+import { OrderCar } from "./components/Order";
 import { CartProvider } from "@/context/CartContext";
+import { UIProvider } from "@/context/UIContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,18 +33,27 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CartProvider>
-          
-           <Header/>
-            <SidebarProvider>
-            <AppSidebar/>
-            <SidebarTrigger className="cursor-pointer"/>
-          <div className="mx-auto">
-            {children}
-          </div>
-          <div className="hidden md:inline-flex">
-            <OrderCar/>
-          </div>
-        </SidebarProvider>
+          <UIProvider>
+            <AppSidebar />
+              <div className="flex">
+                <div className="flex-1">
+                  <Header />
+                  <main>
+                    {children}
+                  
+                  </main>
+
+                </div>
+                <div className="hidden md:inline-flex">
+                  <OrderCar />
+                
+                </div>
+                
+              </div>
+
+              
+        
+          </UIProvider> 
         </CartProvider>
        
       

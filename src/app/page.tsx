@@ -1,9 +1,6 @@
 import Image from "next/image";
 import { Container } from "./components/container";
-import { SubMenu } from "./components/submenu";
 import {supabase} from "@/services/supabaseClient"
-import { Card } from "./components/cards/Card";
-import { OrderCar } from "./components/order";
 import { SalesPanel } from "./components/SalesPanel/SalesPanel";
 
 
@@ -15,7 +12,7 @@ export default async function Home() {
   
   return (
     <div>
-      <SubMenu />
+      
       <div className="flex flex-col">
       
         <Container>

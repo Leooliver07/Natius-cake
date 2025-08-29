@@ -56,7 +56,8 @@ export async function addProductAction(formData: FormData){
   const name = formData.get('name') as string;
   const price = formData.get('price') as string;
   const cost = formData.get('cost') as string;
-  
+  const type = formData.get('type') as string;
+
 
   if(!name || !price || !cost){
     return{sucess: false, message:'Todos os campos são obrigatórios!'}
@@ -67,9 +68,10 @@ export async function addProductAction(formData: FormData){
       name,
       price: Number(price),
       cost: Number(cost),
+      type,
      
     })
-    alert('Produto adicionado com sucesso!')
+   
     if(error) throw error;
 
     revalidatePath('/')

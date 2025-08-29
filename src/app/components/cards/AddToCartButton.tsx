@@ -34,7 +34,7 @@ export function AddCartButton ({product}: {product: Product}){
       className={`h-20 w-48 rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-200
         ${added ? 'bg-green-400 hover:bg-green-500': 'bg-red-200 hover:bg-red-300'}`}
     >
-      <p>{added ? 'Adicionado!' : `Bolo de ${product.name}`}</p>
+      <p>{added ? 'Adicionado!' : `${product.name}`}</p>
 
     </button>
   )

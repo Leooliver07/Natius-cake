@@ -4,15 +4,21 @@ import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import logoimg from "@/app/assets/natiuslogo.png"
 import Link from 'next/link';
+import { useUI } from '@/context/UIContext';
 
 export function Header(){
 
    const {toggleCart} = useCart()
-    
+   const {toggleSidebar} = useUI()
   
   return(
     <main className="mx-auto flex items-center justify-center w-full">
       <header className="w-full h-18 flex justify-between px-2 py-4 bg-red-500">
+        <div>
+          <button title="Menu" onClick={toggleSidebar} className=" bg-black text-white p-2 rounded-md hover:bg-gray-100 hover:text-black cursor-pointer">
+            Menu
+        </button>
+        </div>
         <div className='flex items-center justify-center mt-2'>
           <Link href="/">
             <Image

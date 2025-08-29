@@ -3,17 +3,26 @@ import { createOrder } from "@/app/actions";
 import { useCart } from "@/context/CartContext"
 import { useState } from "react";
 import { CiCircleMinus } from "react-icons/ci";
+import { ReceiptModal } from "./ReceiptModal";
+
+interface OrderItem {
+  id: string;
+  type?: string;
+  name: string;
+  price: number;
+  quantity: number;
+  cost: number;
+}
 
 export function OrderCar(){
   const {cartItems, isCartOpen, removeFromCart, clearCart} = useCart()
   const [isSubmiting, setIsSubmiting] = useState(false)
  
-
-  const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-
+  const [completedOrder, setCompletedOrder] = useState<OrderItem[] | null>(null)
+  
+  
   const handleFinishOrder = async () => {
     if(cartItems.length === 0)return;
-
     setIsSubmiting(true)
 
     const result = await createOrder(cartItems)
@@ -21,24 +30,25 @@ export function OrderCar(){
     setIsSubmiting(false)
   
     if(result.sucess){
-      alert(result.message)
+      setCompletedOrder([...cartItems])
       clearCart()
+      
     }else{
       alert(result.message)
     }
   }
 
-
+   
   if(!isCartOpen){
     return null;
   }
   return(
     <>
-      <div className="border-2 border-gray-300 rounded-l-md h-100 w-48 p-2 mr-1 bg-gray-100">
+      <div className="border-2 border-gray-300 rounded-l-md w-48 p-2  bg-gray-100 flex flex-col fixed top-18 right-0  transition-transform duration-300 ease-in-out">
         {cartItems.map((item) =>
         <div className=" flex justify-around items-center" key={item.id}>
             <div key={item.id} className=" w-full p-2">
-              <p className="font-bold ">{item.type} de {item.name}</p>
+              <p className="font-bold ">{item.name}</p>
               <p>R${item.price},00</p>
               {/* Adicionei esta linha abaixo que voce nao havia colocado nos exemplos. por isso nao estava mostrando a quantidade, apesar de a logica estar funcionando corretamente. */}
               <span className="text-sm font-bold">x{item.quantity}</span>
@@ -70,6 +80,12 @@ export function OrderCar(){
           </button>
         </div>
       </div>
+
+      <ReceiptModal
+        orderItems={completedOrder}
+        onClose={() => setCompletedOrder(null)}
+      
+      />
     </>
   )
 }
