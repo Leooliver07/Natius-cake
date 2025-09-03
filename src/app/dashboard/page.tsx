@@ -12,12 +12,13 @@ import { ProfitPieChart } from "./components/ProfitPieChart";
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise< { [key: string]: string | string[] | undefined }>;
 }) {
 
   
+  const searchP = await searchParams;
 
-  const rangeInDays = Number(searchParams.range || '7')
+  const rangeInDays = Number(searchP.range || '7')
 
   const fromDate = new Date();
   if (rangeInDays === 1){
