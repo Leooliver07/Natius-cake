@@ -4,12 +4,16 @@ import { supabase } from "@/services/supabaseClient";
 import { DateRangeFilter } from "./components/DateRangeFilter";
 import { ProfitPieChart } from "./components/ProfitPieChart";
 
-type DashboardProps = {
+// type DashboardProps = {
  
-  searchParams: {[key: string]: string | string[] | undefined};
-}
+//   searchParams: {[key: string]: string | string[] | undefined};
+// }
 
-export default async function DashboardPage({searchParams}: DashboardProps) {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
 
   
 
