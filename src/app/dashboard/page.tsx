@@ -5,7 +5,7 @@ import { DateRangeFilter } from "./components/DateRangeFilter";
 import { ProfitPieChart } from "./components/ProfitPieChart";
 
 type DashboardProps = {
-  params: {[key: string]: string};
+ 
   searchParams: {[key: string]: string | string[] | undefined};
 }
 
