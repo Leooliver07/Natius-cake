@@ -52,7 +52,7 @@ export async function createOrder(CartItems: CartItem[]){
 
 }
 
-export async function addProductAction(formData: FormData){
+export async function addProductAction(prevState: any,formData: FormData){
   const name = formData.get('name') as string;
   const price = formData.get('price') as string;
   const cost = formData.get('cost') as string;
@@ -73,10 +73,11 @@ export async function addProductAction(formData: FormData){
     })
    
     if(error) throw error;
-
+     
     revalidatePath('/')
     revalidatePath('/register')
-    
+   
+   
     return{sucess: true, message: 'Produto adicionado com sucesso!'}
   }catch(error){
     console.log(error)

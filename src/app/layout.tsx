@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { OrderCar } from "@/app/components/Order/OrderCar";
 import { CartProvider } from "@/context/CartContext";
 import { UIProvider } from "@/context/UIContext";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,7 @@ export default function RootLayout({
                   <Header />
                   <main>
                     {children}
-                  
+                  <Toaster richColors/>
                   </main>
 
                 </div>

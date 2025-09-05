@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Dialog,
   DialogContent,
@@ -6,13 +8,40 @@ import {
 } from "@/components/ui/dialog";
 
 import { addProductAction } from "@/app/actions";
+import {useEffect, useRef} from 'react'
+import { useActionState } from "react";
+import {toast} from 'sonner'
+
+
 
 interface ModalRegisterProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const initialState = {
+  sucess: false, 
+  message: '',
+};
+
+
 export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
+  const [state, formAction] = useActionState(addProductAction, initialState)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if (state.message){
+      if(state.sucess){
+        toast.success(state.message)
+        formRef.current?.reset()
+        onClose()
+      }else{
+        toast.error(state.message)
+      }
+      
+    }
+  },[state, onClose])
+
   const handleOpenChange = (open: boolean) => {
     if (!open) onClose();
   };
@@ -23,7 +52,7 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
         <DialogHeader>
           <DialogTitle>Cadastrar Produto</DialogTitle>
         </DialogHeader>
-        <form action={async (formData) => { await addProductAction(formData); }}>
+        <form ref={formRef} action={formAction} >
           <div className="flex flex-col w-full mb-4 gap-6">
             <div className="flex flex-col w-full mb-4">
               <label htmlFor="name">Nome </label>
