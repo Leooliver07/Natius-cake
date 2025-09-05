@@ -29,7 +29,7 @@ export function OrderCar(){
 
     setIsSubmiting(false)
   
-    if(result.sucess){
+    if(result.success){
       setCompletedOrder([...cartItems])
       clearCart()
       

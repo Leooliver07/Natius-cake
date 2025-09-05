@@ -6,7 +6,7 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { OrderCar } from "@/app/components/Order/OrderCar";
 import { CartProvider } from "@/context/CartContext";
 import { UIProvider } from "@/context/UIContext";
-import { Toaster } from "sonner";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,28 +36,20 @@ export default function RootLayout({
         <CartProvider>
           <UIProvider>
             <AppSidebar />
-              <div className="flex">
-                <div className="flex-1">
-                  <Header />
-                  <main>
-                    {children}
-                  <Toaster richColors/>
-                  </main>
-
-                </div>
-                <div className="hidden md:inline-flex">
-                  <OrderCar />
-                
-                </div>
-                
+            <div className="flex">
+              <div className="flex-1">
+                <Header />
+                <main>
+                  {children}
+                  <Toaster position="top-right" />
+                </main>
               </div>
-
-              
-        
-          </UIProvider> 
+              <div className="hidden md:inline-flex">
+                <OrderCar />
+              </div>
+            </div>
+          </UIProvider>
         </CartProvider>
-       
-      
       </body>
     </html>
   );

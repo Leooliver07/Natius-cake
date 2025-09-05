@@ -1,92 +1,122 @@
 import { Container } from "../components/container";
-import { Dashboard } from "./components/Dashboard";
+import { ItemsSoldChart } from "./components/ItemsSoldChart";
 import { supabase } from "@/services/supabaseClient";
 import { DateRangeFilter } from "./components/DateRangeFilter";
 import { ProfitPieChart } from "./components/ProfitPieChart";
 
 // type DashboardProps = {
- 
+
 //   searchParams: {[key: string]: string | string[] | undefined};
 // }
+type ItemsSold = {
+  product: string;
+  quantity: number;
+}
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise< { [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-
-  
   const searchP = await searchParams;
 
-  const rangeInDays = Number(searchP.range || '7')
+  const rangeInDays = Number(searchP.range || "7");
 
   const fromDate = new Date();
-  if (rangeInDays === 1){
-    fromDate.setHours(0, 0, 0, 0)
+  if (rangeInDays === 1) {
+    fromDate.setHours(0, 0, 0, 0);
   } else {
     fromDate.setDate(fromDate.getDate() - rangeInDays);
   }
   const isoDateString = fromDate.toISOString();
 
+  //Funcao que le os dados da tabela orders para pegar valores de vendas e mostrar no grafico
+  
+  const { data: orders, error } = await supabase
+    .from("orders")
+    .select("created_at, total_amount, total_cost, id")
+    .gte("created_at", isoDateString)
+    .order("created_at", { ascending: true });
 
-  
-  const {data: orders, error} = await supabase
-    .from('orders')
-    .select('created_at, total_amount, total_cost')
-    .gte('created_at', isoDateString)
-    .order('created_at', {ascending: true})
-  
-  if(error){
-    console.log(error)
-    return <div>Ocorreu um erro ao buscar os dados</div>
+  if (error) {
+    console.log(error);
+    return <div>Ocorreu um erro ao buscar os dados</div>;
   }
 
+  const totalSales = orders.reduce((sum, order) => sum + order.total_amount, 0);
+  const totalProfit = orders.reduce(
+    (sum, order) => sum + order.total_amount - order.total_cost,
+    0
+  );
+  const totalCost = orders.reduce((sum, order) => sum + order.total_cost, 0);
 
-  const aggregatedData = orders.reduce((acc, order) => {
+  const salesData = [{ name: "Vendas", value: totalSales }];
 
-      const date = new Date(order.created_at).toISOString().split('T')[0];
-      if(!acc[date]){
-        acc[date] = {
-          date, vendas: 0, lucro: 0, gastos: 0
-        }}
-        acc[date].vendas += order.total_amount;
-        acc[date].lucro += order.total_amount - order.total_cost;
-        acc[date].gastos += order.total_cost;
-      return acc;
-      }, {} as Record<string, {date: string, lucro: number, gastos: number, vendas: number}>
-    );
-
-    const totalSales = orders.reduce((sum, order) => sum + order.total_amount, 0);
-    const totalProfit = orders.reduce((sum, order) => sum + order.total_amount - order.total_cost, 0);
-    const totalCost = orders.reduce((sum, order) => sum + order.total_cost, 0);
-
-    const salesData = [ 
-      {name: 'Vendas', value: totalSales},
-    ]
-
-    const pieChartData = [
-     
-      {name: 'Lucro', value: totalProfit},
-      {name: 'Gastos', value: totalCost},
-    ]
+  const pieChartData = [
+    { name: "Lucro", value: totalProfit },
+    { name: "Gastos", value: totalCost },
+  ];
 
 
-    const chartData = Object.values(aggregatedData);
+  //Funcao que pega os dados ta tabela order_items para o grafico de items mais vendidos
+  
+  const orderIds = orders?.map(order => order.id);
+  let itemsSoldData: ItemsSold[] = [];
+
+
+  if(orderIds.length > 0){  
+  const {data: order_items, error: orderItemsError} = await supabase
+  .from("order_items")
+  .select("product_name, quantity")
+  .in("order_id", orderIds);
+  
+
+
+  if(orderItemsError){
+    console.log(orderItemsError)
+    return <div>Ocorreu um erro ao buscar os dados</div>
+  }
+  
+  const salesAggregtion = order_items.reduce((acc, item) => {
+    const productName = item.product_name;
+    if(!acc[productName]){
+      acc[productName] = 0;
+    }
+    acc[productName] += item.quantity;
+    return acc;
+    
+  }, {} as Record<string, number>);
+
+  
+  
+  const formattedData = Object.entries(salesAggregtion).map(([productName, quantity]) => ({
+    product: productName,
+    quantity: quantity,
+  }));
+
+  itemsSoldData = formattedData
+  .sort((a, b) => b.quantity - a.quantity)
+  .slice(0, 8);
+}
 
 
 
-  return(
+//Console para testes
+console.log("Pedidos encontrados no periodo:", orders.length)
+console.log("Items vendidos", itemsSoldData)
+console.log ("ids dos pedidos", orderIds)
+
+  return (
     <Container>
-      
-      <DateRangeFilter />
+      <div className="w-full">
+       <DateRangeFilter />
 
-      <ProfitPieChart data={pieChartData} salesData={salesData}/>
+      <ProfitPieChart data={pieChartData} salesData={salesData} />
 
-      {/* <Dashboard data={chartData}/>
-      */}
-      
-    
+      <ItemsSoldChart data={itemsSoldData}/>
+
+      </div>
+     
     </Container>
-    
-  )
+  );
 }

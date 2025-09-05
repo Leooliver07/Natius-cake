@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Dialog,
@@ -8,43 +8,47 @@ import {
 } from "@/components/ui/dialog";
 
 import { addProductAction } from "@/app/actions";
-import {useEffect, useRef} from 'react'
-import { useActionState } from "react";
-import {toast} from 'sonner'
+import { useRef } from "react";
+import { toast } from "react-hot-toast";
+import { useFormStatus } from "react-dom";
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
 
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full cursor-pointer bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-6"
+    >
+      {pending ? "Cadastrando..." : "Cadastrar"}
+    </button>
+  );
+}
 
 interface ModalRegisterProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const initialState = {
-  sucess: false, 
-  message: '',
-};
-
-
 export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
-  const [state, formAction] = useActionState(addProductAction, initialState)
-  const formRef = useRef<HTMLFormElement>(null)
-
-  useEffect(() => {
-    if (state.message){
-      if(state.sucess){
-        toast.success(state.message)
-        formRef.current?.reset()
-        onClose()
-      }else{
-        toast.error(state.message)
-      }
-      
-    }
-  },[state, onClose])
-
   const handleOpenChange = (open: boolean) => {
     if (!open) onClose();
   };
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  async function handleAction(formData: FormData) {
+    const result = await addProductAction(formData);
+
+    if (result.success) {
+      toast.success(result.message);
+      formRef.current?.reset();
+      onClose();
+    } else {
+      toast.error(result.message);
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -52,7 +56,7 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
         <DialogHeader>
           <DialogTitle>Cadastrar Produto</DialogTitle>
         </DialogHeader>
-        <form ref={formRef} action={formAction} >
+        <form ref={formRef} action={handleAction}>
           <div className="flex flex-col w-full mb-4 gap-6">
             <div className="flex flex-col w-full mb-4">
               <label htmlFor="name">Nome </label>
@@ -72,7 +76,6 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
                 placeholder="Preço do produto"
                 required
                 type="number"
-
               />
             </div>
 
@@ -87,10 +90,7 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
             </div>
             <div className="flex flex-col w-full mb-4">
               <label htmlFor="type">Tipo</label>
-              <select 
-                title="Selecione um tipo"
-                name="type"
-                required>
+              <select title="Selecione um tipo" name="type" required>
                 <option value={"Bolo"}>Bolo</option>
                 <option value={"Bebida"}>Bebida</option>
                 <option value={"Doce"}>Outros</option>
@@ -98,12 +98,7 @@ export function ModalRegister({ isOpen, onClose }: ModalRegisterProps) {
             </div>
           </div>
 
-          <button
-            className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6"
-            type="submit"
-          >
-            Cadastrar
-          </button>
+          <SubmitButton />
         </form>
       </DialogContent>
     </Dialog>
