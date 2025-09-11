@@ -29,7 +29,7 @@ export function ProductTable({products}: ProductTableProps){
 
 
   return(
-    <div  className="relative flex flex-col w-full h-full overflow-scroll bg-white shadow-md rounded-lg bg-clip-border">
+    <div  className="relative flex flex-col w-full h-full overflow-hidden bg-white shadow-md rounded-lg bg-clip-border">
        <table className="table-auto w-full">
         <thead className="bg-gray-100">
           <tr>
