@@ -1,11 +1,40 @@
 "use client"
 // import supabase from '@/services/supabaseClient'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ModalRegister } from "@/app/register/modalRegister"
+import { ProductTable } from "./ProductTable"
+import { supabase } from "@/services/supabaseClient";
+
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  cost: number;
+};
 
 export default function Register(){
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const [products, setProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    async function fetchProducts(){
+      const {data, error} = await supabase
+      .from("products")
+      .select("*")
+      
+      if(data){
+        setProducts(data)
+      }
+      if(error){
+        console.log(error)
+    }
+
+  }
+  fetchProducts()
+  },[])
 
   return(
     
@@ -30,6 +59,9 @@ export default function Register(){
             onClose={() => setIsModalOpen(false)}
             /> 
 
+          </div>
+          <div className="items-center justify-center mx-auto mt-10">
+            <ProductTable  products={products}/>
           </div>
          
         

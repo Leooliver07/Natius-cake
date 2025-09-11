@@ -29,9 +29,9 @@ export function ItemsSoldChart({data}: {data: ChartData[]}){
             dataKey="product" 
             tickMargin={16}
             angle={23} 
-            className="font-bold" // Diz ao eixo X para usar a chave "product" dos seus dados
-            tick={{ fontSize: 12 }} // Define o tamanho da fonte para os nomes dos itens
-            interval={0} // Garante que todos os nomes sejam exibidos
+            className="font-bold" 
+            tick={{ fontSize: 12 }} 
+            interval={0} 
 
           />
 
