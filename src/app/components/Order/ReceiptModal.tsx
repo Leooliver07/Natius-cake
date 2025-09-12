@@ -18,9 +18,10 @@ interface OrderItem{
 interface ReceiptModalProps{
   orderItems: OrderItem[] | null;
   onClose: () => void;
+  toggleCart: () => void;
 }
 
-export function ReceiptModal({orderItems, onClose}: ReceiptModalProps){
+export function ReceiptModal({orderItems, onClose, toggleCart}: ReceiptModalProps){
   const isOpen = orderItems !== null;
 
   const handlePrint = () =>{
@@ -51,7 +52,10 @@ export function ReceiptModal({orderItems, onClose}: ReceiptModalProps){
           
           <button 
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded cursor-pointer"  
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              toggleCart();
+            }}
             
             >Fechar</button>
         </DialogFooter>

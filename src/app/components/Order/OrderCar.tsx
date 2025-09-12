@@ -15,7 +15,7 @@ interface OrderItem {
 }
 
 export function OrderCar(){
-  const {cartItems, isCartOpen, removeFromCart, clearCart} = useCart()
+  const {cartItems, isCartOpen, removeFromCart, clearCart, toggleCart} = useCart()
   const [isSubmiting, setIsSubmiting] = useState(false)
  
   const [completedOrder, setCompletedOrder] = useState<OrderItem[] | null>(null)
@@ -37,6 +37,7 @@ export function OrderCar(){
     if(result.success){
       setCompletedOrder([...cartItems])
       clearCart()
+      
       
     }else{
       alert(result.message)
@@ -89,6 +90,7 @@ export function OrderCar(){
       <ReceiptModal
         orderItems={completedOrder}
         onClose={() => setCompletedOrder(null)}
+        toggleCart={toggleCart}
       
       />
     </>
