@@ -6,11 +6,14 @@ import { ProductTable } from "./ProductTable"
 import { supabase } from "@/services/supabaseClient";
 
 
+
 type Product = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
+  type: string;
+  
 };
 
 export default function Register(){
@@ -19,6 +22,16 @@ export default function Register(){
 
   const [products, setProducts] = useState<Product[]>([])
 
+  async function fetchProducts(){
+    const {data} = await supabase
+    .from("products")
+    .select("*")
+    
+    if(data){
+      setProducts(data)
+    }    
+
+  }
   useEffect(() => {
     async function fetchProducts(){
       const {data, error} = await supabase
@@ -35,6 +48,8 @@ export default function Register(){
   }
   fetchProducts()
   },[])
+
+ 
 
   return(
     
@@ -56,13 +71,20 @@ export default function Register(){
           </div>
           <div>
             <ModalRegister isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => setIsModalOpen(false)
+            }
+            onRefresh={fetchProducts}
             /> 
 
           </div>
           <div className="items-center justify-center mx-auto mt-10">
-            <ProductTable  products={products}/>
+            <ProductTable  
+              products={products}
+              onRefresh={fetchProducts}
+            />
           </div>
+
+          
          
         
       </main> 

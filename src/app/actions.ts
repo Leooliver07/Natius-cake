@@ -94,3 +94,51 @@ export async function addProductAction(formData: FormData) {
     };
   }
 }
+
+
+export async function updateProductAction(formData: FormData) {
+  const name = formData.get("name") as string;
+  const price = formData.get("price") as string;
+  const cost = formData.get("cost") as string;
+  const type = formData.get("type") as string;
+  const id = formData.get("id") as string;
+
+
+  try {
+    const { error } = await supabase
+    .from("products")
+    .update({
+      name,
+      price: Number(price),
+      cost: Number(cost),
+      type,
+    })
+    .eq("id", id)
+    ;
+
+    if (error) throw error;
+    revalidatePath("/");
+    revalidatePath("/register");
+
+    return { success: true, message: "Produto atualizado com sucesso!" }; 
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteProductAction(idProduct: string) {
+  console.log(idProduct);
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", idProduct);
+
+  if (error) throw error;
+  console.log("Produto deletado com sucesso!");
+  revalidatePath("/");
+  revalidatePath("/register");
+
+  return { success: true, message: "Produto deletado com sucesso!" };
+
+    
+}

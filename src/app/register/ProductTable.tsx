@@ -1,24 +1,29 @@
+"use client";
+
+import { useState } from "react"
 import { FaEdit, FaTrashAlt } from "react-icons/fa"
-import { supabase } from "@/services/supabaseClient";
+import { ModalUpdate } from "./modalUpdate";
+import { deleteProductAction } from "@/app/actions";
+import toast from "react-hot-toast";
 
 
 type Product = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   cost: number;
+  type: string;
   
 }
 interface ProductTableProps{
   products: Product[];
+  onRefresh: () => void;
 }
 
 
 
 
-
-
-export function ProductTable({products}: ProductTableProps){
+export function ProductTable({products, onRefresh}: ProductTableProps){
   const formatNumbers = (data:  number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -26,7 +31,24 @@ export function ProductTable({products}: ProductTableProps){
     }).format(data);
   }
   
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+
+
+
+  const handleDelete = async (idProduct: string) => {
+    const result = await deleteProductAction(idProduct)
+
+    if(result.success){
+     toast.success(result.message)
+      onRefresh()
+    }else{
+      toast.error(result.message)
+      
+    }
+  }
+  
 
   return(
     <div  className="relative flex flex-col w-full h-full overflow-hidden bg-white shadow-md rounded-lg bg-clip-border">
@@ -51,8 +73,26 @@ export function ProductTable({products}: ProductTableProps){
                 <td className="border border-gray-300 p-4 text-left">{formatNumbers(product.cost)}</td>
                 <td className="border border-gray-300 p-4 text-left">
                   <div className="flex gap-2">
-                    <button title="Editar"><FaEdit size={22} className="cursor-pointer"/></button>
-                    <button title="Excluir"><FaTrashAlt size={22} color="#cf1515" className="cursor-pointer"/></button>
+                    <button 
+                      title="Editar"
+                      
+                      onClick={() => {
+                        setIsModalOpen(true)
+                        setSelectedProduct(product)
+                      }}
+                      >
+                        <FaEdit size={22} className="cursor-pointer"/>
+                    </button>
+                    <button
+                      title="Excluir"
+                      onClick={() => {
+                        setSelectedProduct(product)
+                        
+                        handleDelete(product.id as string)
+                      }}
+                     >
+                      <FaTrashAlt size={22} color="#cf1515" className="cursor-pointer"/>
+                      </button>
                   </div>
                 </td>
               </tr>
@@ -64,9 +104,16 @@ export function ProductTable({products}: ProductTableProps){
          
        </table>
 
-
+      {/* The ModalUpdate component is rendered here */}
     <div>
-      
+      <ModalUpdate 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={selectedProduct}
+        onRefresh={onRefresh}
+        
+      /> 
+
       </div>
     </div>
   )

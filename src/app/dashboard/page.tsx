@@ -102,9 +102,9 @@ export default async function DashboardPage({
 
 
 //Console para testes
-console.log("Pedidos encontrados no periodo:", orders.length)
-console.log("Items vendidos", itemsSoldData)
-console.log ("ids dos pedidos", orderIds)
+// console.log("Pedidos encontrados no periodo:", orders.length)
+// console.log("Items vendidos", itemsSoldData)
+// console.log ("ids dos pedidos", orderIds)
 
   return (
     <Container>

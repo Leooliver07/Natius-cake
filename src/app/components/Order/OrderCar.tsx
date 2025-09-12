@@ -19,7 +19,12 @@ export function OrderCar(){
   const [isSubmiting, setIsSubmiting] = useState(false)
  
   const [completedOrder, setCompletedOrder] = useState<OrderItem[] | null>(null)
-  
+  const formatNumbers = (data:  number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(data);
+  } 
   
   const handleFinishOrder = async () => {
     if(cartItems.length === 0)return;
@@ -49,7 +54,7 @@ export function OrderCar(){
         <div className=" flex justify-around items-center" key={item.id}>
             <div key={item.id} className=" w-full p-2">
               <p className="font-bold ">{item.name}</p>
-              <p>R${item.price},00</p>
+              <p>{formatNumbers(item.price)}</p>
               {/* Adicionei esta linha abaixo que voce nao havia colocado nos exemplos. por isso nao estava mostrando a quantidade, apesar de a logica estar funcionando corretamente. */}
               <span className="text-sm font-bold">x{item.quantity}</span>
            

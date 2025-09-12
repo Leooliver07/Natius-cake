@@ -22,7 +22,7 @@ export function AddCartButton ({product}: {product: Product}){
     setAdded(true)
     setTimeout(() => {
       setAdded(false)
-    }, 1500)
+    }, 500)
 
 
   }
