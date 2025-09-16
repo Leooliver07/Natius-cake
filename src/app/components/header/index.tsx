@@ -32,7 +32,7 @@ export function Header(){
           </Link>
           
         </div>
-        <button onClick={toggleCart} className='relative cursor-pointer mr-4' title="Shopping Cart">
+        <button onClick={toggleCart} className='relative cursor-pointer mr-12' title="Shopping Cart">
           <FaShoppingCart size={28}/>
           
         </button> 

@@ -63,7 +63,7 @@ export function OrderCar(){
           <div className="drop-shadow-2xl ">
             <button
               title="Remover item" 
-              className="cursor-pointer hover:scale-101 transition-all duration-200"
+              className="cursor-pointer hover:scale-101 transition-all duration-200 mr-2 "
               onClick={() => removeFromCart(item.id)}>
               <CiCircleMinus size={26}/>
             </button>
