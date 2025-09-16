@@ -8,7 +8,7 @@ import { useUI } from '@/context/UIContext';
 
 export function Header(){
 
-   const {toggleCart} = useCart()
+   const {toggleCart, cartItems} = useCart()
    const {toggleSidebar} = useUI()
   
   return(
@@ -34,6 +34,15 @@ export function Header(){
         </div>
         <button onClick={toggleCart} className='relative cursor-pointer mr-12' title="Shopping Cart">
           <FaShoppingCart size={28}/>
+          {cartItems.length > 0 && (
+            <div className='bg-white rounded-2xl fixed top-2 right-9 w-6 h-6 flex items-center justify-center text-xs font-bold'>
+            <span
+              className='font-medium '
+            >
+              {cartItems.length}
+            </span>
+          </div>
+          )}
           
         </button> 
         
