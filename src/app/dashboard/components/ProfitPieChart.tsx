@@ -8,7 +8,7 @@ interface PieChartData {
 }
 
 //Cores das partes do grafico
-const COLORS = ['#82ca9d', '#8884d8']
+
 const COLORS_INT = ["#35a608", '#c90404']
 export function ProfitPieChart ({ data, salesData }: { data: PieChartData[]; salesData: PieChartData[]}) {
   const formatNumbers = (data:  number) => {

@@ -31,8 +31,8 @@ export function AddCartButton ({product}: {product: Product}){
     <button
       onClick={handleClick}
       disabled={added}
-      className={`h-20 w-48 rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-200
-        ${added ? 'bg-green-400 hover:bg-green-500': 'bg-red-200 hover:bg-red-300'}`}
+      className={`h-20 w-48 rounded-2xl shadow-md shadow-gray-400/50 border border-gray-200 flex items-center justify-center cursor-pointer transform transition-all duration-200 ease-in-out
+        ${added ? 'bg-green-400 hover:bg-green-500': 'bg-red-200 hover:bg-red-300 hover:translate-y-1 hover:shadow-lg'}`}
     >
       <p>{added ? 'Adicionado!' : `${product.name}`}</p>
 
