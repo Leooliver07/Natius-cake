@@ -40,7 +40,7 @@ const { data: orders, error } = await supabase
   
 
   return(
-    <div className="flex items-center justify-center h-screen mx-auto">
+    <div className="flex items-center justify-center h-screen mx-auto max-w-lg">
       <PaymentChart data={chartData} />
     </div>
   )
