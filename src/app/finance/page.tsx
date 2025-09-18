@@ -1,5 +1,5 @@
 import { supabase } from "@/services/supabaseClient"
-import { PaymentChart } from "./PaymentChart"
+import { PaymentChart } from "../dashboard/components/PaymentChart"
 
 interface AggregatedPaymentData {
   payment_method: string;

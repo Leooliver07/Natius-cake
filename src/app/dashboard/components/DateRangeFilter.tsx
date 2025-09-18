@@ -22,7 +22,7 @@ export function DateRangeFilter() {
   const currentRange = searchParams.get('range') || '7'; // Default to 7 days if no range is set
 
   return (
-    <div>
+    <div className="flex items-center gap-1 justify-center">
       {ranges.map((range) => (
         <button
           key={range.value}

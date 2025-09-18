@@ -3,11 +3,13 @@ import { ItemsSoldChart } from "./components/ItemsSoldChart";
 import { supabase } from "@/services/supabaseClient";
 import { DateRangeFilter } from "./components/DateRangeFilter";
 import { ProfitPieChart } from "./components/ProfitPieChart";
+import { PaymentChart } from "./components/PaymentChart";
 
-// type DashboardProps = {
+interface AggregatedPaymentData {
+  payment_method: string;
+  total_amount: number;
+}
 
-//   searchParams: {[key: string]: string | string[] | undefined};
-// }
 type ItemsSold = {
   product: string;
   quantity: number;
@@ -34,7 +36,7 @@ export default async function DashboardPage({
   
   const { data: orders, error } = await supabase
     .from("orders")
-    .select("created_at, total_amount, total_cost, id")
+    .select("created_at, total_amount, total_cost, id, payment_method")
     .gte("created_at", isoDateString)
     .order("created_at", { ascending: true });
 
@@ -99,21 +101,45 @@ export default async function DashboardPage({
   .slice(0, 8);
 }
 
+//---------I moved here the logical of paymentMethod chart data: --------------
+const allPaymentMethods = ['dinheiro', 'credito', 'debito', 'pix'];
 
+  const initialData: Record<string, AggregatedPaymentData> = allPaymentMethods.reduce((acc, method) => {
+    acc[method] = { payment_method: method, total_amount: 0 };
+    return acc;
+  }, {} as Record<string, AggregatedPaymentData>);
 
-//Console para testes
-// console.log("Pedidos encontrados no periodo:", orders.length)
-// console.log("Items vendidos", itemsSoldData)
-// console.log ("ids dos pedidos", orderIds)
+  const aggregatedData = orders.reduce<Record<string, AggregatedPaymentData>>((acc, order) => {
+    const method = order.payment_method;
+    if (acc[method]) {
+      // Converta o valor para um número antes de somar
+      acc[method].total_amount += Number(order.total_amount);
+    }
+    return acc;
+  }, initialData);
+
+  const chartData = Object.values(aggregatedData);
 
   return (
     <Container>
-      <div className="w-full">
-       <DateRangeFilter />
+      <div className="w-full mx-auto">
+       <div className="items-center justify-center mx-auto">
+        <DateRangeFilter />
+       </div>
+       
+        <div>
+          <div className="flex items-center justify-between gap-2">
+            <ProfitPieChart data={pieChartData} salesData={salesData} />
+            <PaymentChart data={chartData} />
+          </div>
+          <div>
+             <ItemsSoldChart data={itemsSoldData}/>
+          </div>
+         
+        </div>
+      
 
-      <ProfitPieChart data={pieChartData} salesData={salesData} />
-
-      <ItemsSoldChart data={itemsSoldData}/>
+      
 
       </div>
      
