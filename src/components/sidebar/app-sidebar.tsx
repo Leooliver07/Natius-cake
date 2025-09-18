@@ -1,5 +1,5 @@
 "use client"
-import {Home, Inbox, Search, Settings, User } from "lucide-react"
+import {Home, Search, DollarSign, User } from "lucide-react"
 import Link from "next/link"
 import { useUI } from "@/context/UIContext"
 import { MdDashboard } from "react-icons/md"
@@ -7,7 +7,7 @@ import { MdDashboard } from "react-icons/md"
 const navItems = [
   {href:'/', icon: Home, title: 'Home'},
   {href:'/register', icon: Search, title: 'Cadastro de Produtos'},
-  {href:'/order', icon: Inbox, title: 'Pedidos'},
+  {href:'/finance', icon: DollarSign, title: 'Financeiro'},
   {href:'/profile', icon: User, title: 'Perfil'},
   {href:'/dashboard', icon: MdDashboard, title: "Dashboard"},
 ]

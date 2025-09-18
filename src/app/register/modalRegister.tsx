@@ -95,7 +95,7 @@ export function ModalRegister({ isOpen, onClose, onRefresh }: ModalRegisterProps
               <select title="Selecione um tipo" name="type" required>
                 <option value={"Bolo"}>Bolo</option>
                 <option value={"Bebida"}>Bebida</option>
-                <option value={"Doce"}>Outros</option>
+                <option value={"Outros"}>Outros</option>
               </select>
             </div>
           </div>

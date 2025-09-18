@@ -12,7 +12,7 @@ type CartItem = {
   type?: string;
 };
 
-export async function createOrder(CartItems: CartItem[]) {
+export async function createOrder(CartItems: CartItem[], selectPaymentMethod: string) {
   try {
     const totalAmount = CartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
@@ -28,6 +28,7 @@ export async function createOrder(CartItems: CartItem[]) {
       .insert({
         total_amount: totalAmount,
         total_cost: totalCost,
+        payment_method: selectPaymentMethod,
       })
       .select("id")
       .single();

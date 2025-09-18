@@ -5,7 +5,7 @@ interface SubMenuProps {
   onSelectedCategory: (category: string) => void;
 }
 
-const categories = ['Bolo', 'Bebida', 'Outro'];
+const categories = ['Bolo', 'Bebida', 'Outros'];
 
 
 export function SubMenu({selectedCategory, onSelectedCategory}: SubMenuProps){
